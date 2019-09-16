@@ -1,0 +1,242 @@
+<!doctype html>
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8">
+
+		<title>GitFlow - a workflow for git</title>
+
+		<meta name="description" content="A framework for easily creating beautiful presentations using HTML">
+		<meta name="author" content="Hakim El Hattab">
+
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<link rel="stylesheet" href="css/reveal.css">
+		<link rel="stylesheet" href="css/theme/league.css" id="theme">
+
+		<!-- Theme used for syntax highlighting of code -->
+		<link rel="stylesheet" href="lib/css/zenburn.css">
+
+		<!-- Printing and PDF exports -->
+		<script>
+			var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';
+			link.type = 'text/css';
+			link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );
+		</script>
+
+		<!--[if lt IE 9]>
+		<script src="lib/js/html5shiv.js"></script>
+		<![endif]-->
+	</head>
+
+	<body>
+
+		<div class="reveal">
+
+			<!-- Any section element inside of this container is displayed as a slide -->
+			<div class="slides">
+				<section>
+					<h1>GitFlow</h1>
+					<h3>ein Workflow für git</h3>
+					<p>
+						<small>Created by <a href="https://nvie.com/">Vincent Driessen</a></small>
+					</p>
+					<summary style="font-size:8pt">Presentation by Ruben Reiss and Daniel Fahsig</summary>
+				</section>
+
+				<section>
+					<h2>Überblick</h2>
+					<img height="500" data-src="https://nvie.com/img/git-model@2x.png" alt="Overview" />
+				</section>
+
+				<!-- Example of nested vertical slides -->
+				<section>
+					<section>
+						<h2>Umgebung</h2>
+						<img height="500" data-src="https://nvie.com/img/centr-decentr@2x.png" alt="Overview" />
+					</section>
+					<section>
+						<h2>Umgebung</h2>
+						<ul>
+							<li>Ein zentrales Repository -&gt; auf dem TFS (<code>origin</code> genannt)</li>
+							<li class="fragment">Jeder Entwickler/Benutzer hat eigenes Repository</li>
+							<li class="fragment">Austausch unter den Entwicklern möglich - z.B. Bildung kleinerer Teams für ein Feature</li>
+						</ul>
+					</section>
+				</section>
+
+				<section>
+					<h2>Branches</h2>
+					<ol>
+						<li>Branches, die immer benutzt werden und dauerhaft bestehen</li>
+						<li class="fragment">Kurzlebige Branches</li>
+					</ol>
+				</section>
+				<section>
+					<section>
+						<h2>Unbegrenzte Haltbarkeit</h2>
+						<ul>
+							<li><code>master</code> - der Branch, der immer den Stand enthält der in Produktion ist (ausgerollt)</li>
+							<li class="fragment"><code>develop</code> - der Branch, der die aktuelle Entwicklungsversion enthält</li>
+						</ul>
+					</section>
+					<section>
+						<h2>Darstellung</h2>
+						<img height="500" data-src="https://nvie.com/img/main-branches@2x.png" alt="Overview" />
+					</section>
+					<section>
+						<h2>develop</h2>
+						<h4>Integration</h3>
+						<ul>
+							<li>Kann auch eigenständige Commits enthalten</li>
+							<li class="fragment">Hauptsächlich Merges von kurzlebigen Branches</li>
+							<li class="fragment">Wenn Entwicklung stabil wird, dann wird der Branch zurück in den <code>master</code> gebracht und getagged</li>
+						</ul>
+					</section>
+					<section>
+						<h2>master</h2>
+						<h3>Produktion</h3>
+						<ul>
+							<li>Keine eigenständigen Commits hier</li>
+							<li class="fragment">Nur Merges von <code>develop</code> oder anderen Branches</li>
+							<li class="fragment">Durch jeden Merge entsteht ein neues Release auf dem <code>master</code></li>
+							<li class="fragment">Jeder commit hier entspricht einer ausgerollten Version =&gt; hier könnte eine automatische Ausrollaktion greifen.</li>
+						</ul>
+					</section>
+				</section>
+				<section>
+					<h2>Kurzlebigere Branches</h2>
+					<ul>
+						<li>unter <code>feature/</code> - Feature Entwicklung</li>
+						<li class="fragment">unter <code>release/</code> - Release Vorbereitung</li>
+						<li class="fragment">unter <code>bugfix/</code> - Bugfixes für die Produktion</li>
+						<aside class="notes">
+							Support branch => Unterstützung für ältere Releases (Anicors/Anicirx)
+							Bugs: Nur in Produktion gefundene Fehler (streng genommen)
+						</aside>
+					</ul>
+				</section>
+				<section>
+					<section>
+						<h2>feature/</h2>
+						<h3>Darstellung</h3>
+						<img height="400" data-src="https://nvie.com/img/fb@2x.png" alt="Overview" />
+					</section>
+					<section>
+						<h2>feature/</h2>
+						<h3>Feature Entwicklung</h3>
+						<ul>
+							<li>Abgezweigt von <code>develop</code></li>
+							<li class="fragment">Zurückmergen nur in <code>develop</code></li>
+							<li class="fragment">Namenskonvention: <code>feature/[TfsItemNo]-frei-wählbarer-titel</code></li>
+							<li class="fragment">Genutzt für die Entwicklung an Features für die nächste Version oder eine Version in Zukunft</li>
+						</ul>
+						<aside class="notes">
+							Titel für Pull Requests sinnvoll um lesbar zu sein
+							Im Zusammenhang mit Pull Requests das finish weg lassen
+							Wiki Seite zeigen mit Befehlen für gitflow
+						</aside>
+					</section>
+					<section>
+						<h2>feature/</h2>
+						<h3>Feature Entwicklung</h3>
+						<ul>
+							<li>Existiert so lange, wie an dem Feature gearbeitet wird</li>
+							<li class="fragment">Existiert normalerweise nur bei dem Entwickler selbst</li>
+							<li class="fragment">Für das Mergen können dann auch Pull Requests genutzt werden</li>
+						</ul>
+					</section>
+				</section>
+				<section>
+					<section>
+						<h2>release/</h2>
+						<h3>Release Entwicklung</h3>
+						<ul>
+							<li>Abgezweigt von <code>develop</code></li>
+							<li class="fragment"><b>Müssen</b> sowohl in <code>develop</code>, als auch in <code>master</code> gemerged werden</li>
+							<li class="fragment">Namenskonvention: <code>release/release-bezeichnung</code></li>
+							<li class="fragment">Genutzt für das Freigeben neuer Versionen</li>
+							<li class="fragment">Hier werden Last-Minute-Änderungen gemacht, sowie die Version im Code hochgezogen</li>
+						</ul>
+					</section>
+					<section>
+						<h2>release/</h2>
+						<h3>Release Entwicklung</h3>
+						<ul>
+							<li>Sobald der Branch begonnen wird, sind alle noch offenen feature-Branches auf develop automatisch für eine spätere Version</li>
+							<li class="fragment">Sobald die Arbeit abgeschlossen ist, wird der Branch sowohl in <code>develop</code>, als auch in <code>master</code> gemerged.</li>
+							<li class="fragment">Der Stand auf dem <code>master</code> kann dann auch noch getagged werden</li>
+							<li class="fragment">Für das Mergen können dann auch Pull Requests genutzt werden</li>
+						</ul>
+					</section>
+				</section>
+				<section>
+					<section>
+						<h2>bugfix/</h2>
+						<h3>Darstellung</h3>
+						<img height="400" data-src="https://nvie.com/img/hotfix-branches@2x.png" alt="Overview" />
+					</section>
+					<section>
+						<h2>bugfix/</h2>
+						<h3>Bugfixes für die Produktion</h3>
+						<ul>
+							<li>Abgezweigt von <code>master</code></li>
+							<li class="fragment"><b>Müssen</b> sowohl in <code>develop</code>, als auch in <code>master</code> gemerged werden</li>
+							<li class="fragment">Namenskonvention: <code>bugfix/[TfsItemNo]-bezeichnung</code></li>
+							<li class="fragment">Genutzt für das Fixen von Bugs in der freigegebenen Version</li>
+						</ul>
+					</section>
+					<section>
+						<h2>bugfix/</h2>
+						<h3>Bugfixes für die Produktion</h3>
+						<ul>
+							<li>Dadurch kann der Rest des Teams unbehelligt weiter an der nächsten Version arbeiten</li>
+							<li class="fragment">Sobald die Arbeit abgeschlossen ist, wird der Branch sowohl in <code>develop</code>, als auch in <code>master</code> gemerged.</li>
+							<li class="fragment">Der Stand auf dem <code>master</code> kann dann auch noch getagged werden</li>
+							<li class="fragment">Für das Mergen können dann auch Pull Requests genutzt werden</li>
+						</ul>
+					</section>
+				</section>
+				<section>
+					<h2>Überblick</h2>
+					<img height="500" data-src="https://nvie.com/img/git-model@2x.png" alt="Overview" />
+				</section>
+			</div>
+
+		</div>
+
+		<script src="lib/js/head.min.js"></script>
+		<script src="js/reveal.js"></script>
+
+		<script>
+
+			// More info https://github.com/hakimel/reveal.js#configuration
+			Reveal.initialize({
+				controls: true,
+				progress: true,
+				history: true,
+				center: true,
+
+				transition: 'fade', // none/fade/slide/convex/concave/zoom
+
+				// More info https://github.com/hakimel/reveal.js#dependencies
+				dependencies: [
+					{ src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+					{ src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+					{ src: 'plugin/search/search.js', async: true },
+					{ src: 'plugin/zoom-js/zoom.js', async: true },
+					{ src: 'plugin/notes/notes.js', async: true }
+				]
+			});
+
+		</script>
+
+	</body>
+</html>
